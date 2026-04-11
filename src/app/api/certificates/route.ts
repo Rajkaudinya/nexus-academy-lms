@@ -5,6 +5,7 @@ import { getTokenPayload, checkRole } from '@/lib/auth';
 export async function POST(req: Request) {
   try {
     const user = getTokenPayload(req);
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     if (!checkRole(user, ['STUDENT', 'ADMIN'])) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
     const { courseId } = await req.json();
